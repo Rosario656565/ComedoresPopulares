@@ -1,0 +1,57 @@
+@if (!logged()) {
+<!-- 1. INICIO DE SESIÓN -->
+<div id="login">
+  <form class="box" (ngSubmit)="entrar()">
+    <h1>Comedor Popular</h1>
+    <p class="mut" style="margin: 2px 0 8px">Sistema de gestión · Huancayo</p>
+
+    <label for="u">Usuario</label>
+    <input
+      id="u"
+      name="usuario"
+      [(ngModel)]="usuario"
+      autocomplete="username"
+      required
+    />
+
+    <label for="pw">Contraseña</label>
+    <input
+      id="pw"
+      name="clave"
+      type="password"
+      [(ngModel)]="clave"
+      autocomplete="current-password"
+      required
+    />
+
+    <div class="err">{{ error }}</div>
+    <button class="p" style="width: 100%; margin-top: 8px">Ingresar</button>
+    <p class="mut" style="font-size: 0.8rem; margin: 12px 0 0">
+      Demo: usuario <b>admin</b>, contraseña <b>1234</b>
+    </p>
+  </form>
+</div>
+} @else {
+<!-- 2. SISTEMA: menú lateral + pantallas -->
+<div id="app">
+  <header>
+    <b>Comedor Popular<small>Sistema de gestión · Huancayo</small></b>
+    @for (m of menu; track m.id) {
+    <button [class.on]="vista() === m.id" (click)="vista.set(m.id)">
+      {{ m.txt }}
+    </button>
+    }
+    <button id="out" (click)="salir()">Salir</button>
+    <small>Sesión: Administradora</small>
+  </header>
+
+  <main>
+    @switch (vista()) { @case ('panel') {
+    <app-panel-componentes (irRaciones)="vista.set('raciones')" /> } @case
+    ('beneficiarios') { <app-beneficiarios-componentes /> } @case ('raciones') {
+    <app-raciones-componentes /> } @case ('insumos') {
+    <app-insumos-componentes /> } @case ('reportes') {
+    <app-reportes-componentes /> } }
+  </main>
+</div>
+}

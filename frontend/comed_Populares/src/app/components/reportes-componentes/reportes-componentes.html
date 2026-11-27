@@ -1,0 +1,110 @@
+<div class="row">
+  <h2 style="margin: 0">Reportes mensuales</h2>
+  <button class="p" (click)="nuevo()">Registrar reporte mensual</button>
+</div>
+
+<div class="kpis">
+  <div class="kpi">
+    <div class="n g">{{ actual().rac }}</div>
+    <div class="mut">Raciones del mes</div>
+  </div>
+  <div class="kpi">
+    <div class="n g">{{ actual().ven | currency: 'PEN' : 'S/ ' }}</div>
+    <div class="mut">Dinero recaudado</div>
+  </div>
+  <div class="kpi">
+    <div class="n r">{{ actual().gi | currency: 'PEN' : 'S/ ' }}</div>
+    <div class="mut">Gasto en insumos</div>
+  </div>
+  <div class="kpi">
+    <div class="n r">{{ actual().gas | currency: 'PEN' : 'S/ ' }}</div>
+    <div class="mut">Gastos generales</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Resumen por mes</h3>
+  <div class="cv"><canvas #cv></canvas></div>
+</div>
+
+<div class="card scroll">
+  <table>
+    <thead>
+      <tr>
+        <th>Mes</th>
+        <th>Gasto en insumos</th>
+        <th>Gastos generales</th>
+        <th>Dinero recaudado</th>
+        <th>Raciones</th>
+        <th>Costo por ración</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (f of filas(); track f.mes) {
+      <tr>
+        <td>{{ f.mes }}</td>
+        <td>{{ f.gi | currency: 'PEN' : 'S/ ' }}</td>
+        <td>{{ f.gas | currency: 'PEN' : 'S/ ' }}</td>
+        <td>{{ f.ven | currency: 'PEN' : 'S/ ' }}</td>
+        <td>{{ f.rac }}</td>
+        <td>
+          {{ f.costoRac === null ? '—' : (f.costoRac | currency: 'PEN' : 'S/ ')
+          }}
+        </td>
+        <td class="a">
+          @if (f.tiene) {
+          <button (click)="editar(f)">Editar</button>
+          <button class="d" (click)="eliminar(f.mes)">Eliminar</button>
+          }
+        </td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="7" class="mut">Aún no hay datos mensuales.</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (form) {
+<div class="ov">
+  <form class="md" ngNativeValidate (ngSubmit)="guardar()">
+    <h3>{{ editando ? 'Editar' : 'Registrar' }} reporte mensual</h3>
+    <label>Mes</label>
+    <input
+      name="mes"
+      type="month"
+      [(ngModel)]="form.mes"
+      [readOnly]="editando"
+      required
+    />
+    <label>Total vendido (S/)</label>
+    <input
+      name="ven"
+      type="number"
+      min="0"
+      step="0.01"
+      [(ngModel)]="form.ven"
+      required
+    />
+    <label>Gastos generales del mes (S/)</label>
+    <input
+      name="gas"
+      type="number"
+      min="0"
+      step="0.01"
+      [(ngModel)]="form.gas"
+      required
+    />
+    <p class="mut" style="font-size: 0.85rem">
+      El dinero recaudado se calcula a partir de lo vendido.
+    </p>
+    <div class="bt">
+      <button type="button" (click)="form = null">Cancelar</button>
+      <button class="p">Guardar cambios</button>
+    </div>
+  </form>
+</div>
+}

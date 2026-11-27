@@ -1,0 +1,94 @@
+<div class="row">
+  <h2 style="margin: 0">Insumos</h2>
+  <button class="p" (click)="nuevo()">Registrar insumo</button>
+</div>
+
+<div class="card scroll">
+  <table>
+    <thead>
+      <tr>
+        <th>Insumo</th>
+        <th>Cantidad</th>
+        <th>Mínima</th>
+        <th>Origen</th>
+        <th>Costo</th>
+        <th>Vence</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (i of ordenados(); track i.id) {
+      <tr>
+        <td>{{ i.nom }}</td>
+        <td [class.bad]="i.cant <= i.min">{{ i.cant }}</td>
+        <td>{{ i.min }}</td>
+        <td>{{ i.tipo }}{{ i.don ? ' · ' + i.don : '' }}</td>
+        <td>{{ i.costo | currency: 'PEN' : 'S/ ' }}</td>
+        <td>{{ i.venc || '—' }}</td>
+        <td><span class="tag {{ clase(i) }}">{{ estado(i) }}</span></td>
+        <td class="a">
+          <button (click)="editar(i)">Editar</button>
+          <button class="d" (click)="eliminar(i)">Eliminar</button>
+        </td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="8" class="mut">Aún no hay insumos registrados.</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (form) {
+<div class="ov">
+  <form class="md" ngNativeValidate (ngSubmit)="guardar()">
+    <h3>{{ form.id ? 'Editar' : 'Registrar' }} insumo</h3>
+    <label>Nombre del insumo</label>
+    <input name="nom" [(ngModel)]="form.nom" required />
+    <label>Cantidad</label>
+    <input
+      name="cant"
+      type="number"
+      min="0"
+      step="any"
+      [(ngModel)]="form.cant"
+      required
+    />
+    <label>Cantidad mínima</label>
+    <input
+      name="min"
+      type="number"
+      min="0"
+      step="any"
+      [(ngModel)]="form.min"
+      required
+    />
+    <label>Fecha de vencimiento</label>
+    <input name="venc" type="date" [(ngModel)]="form.venc" />
+    <label>Origen</label>
+    <select name="tipo" [(ngModel)]="form.tipo">
+      <option value="Compra">Compra</option>
+      <option value="Donación">Donación</option>
+    </select>
+    @if (form.tipo === 'Compra') {
+    <label>Costo (S/)</label>
+    <input
+      name="costo"
+      type="number"
+      min="0"
+      step="0.01"
+      [(ngModel)]="form.costo"
+    />
+    } @else {
+    <label>Donante (municipalidad, iglesia, vecino…)</label>
+    <input name="don" [(ngModel)]="form.don" />
+    }
+    <div class="bt">
+      <button type="button" (click)="form = null">Cancelar</button>
+      <button class="p">Guardar cambios</button>
+    </div>
+  </form>
+</div>
+}
