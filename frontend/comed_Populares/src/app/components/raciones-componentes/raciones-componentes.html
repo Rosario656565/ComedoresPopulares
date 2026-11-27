@@ -1,0 +1,101 @@
+<h2>Raciones y asistencia</h2>
+
+<div class="card">
+  <label for="fd">Fecha</label>
+  <input
+    id="fd"
+    type="date"
+    [value]="fecha"
+    (change)="cambiar($event)"
+    style="max-width: 200px"
+  />
+  <h3 style="margin-top: 14px">Asistencia del día</h3>
+  <div class="scroll">
+    <table style="min-width: 300px">
+      <tbody>
+        @for (b of activos(); track b.id) {
+        <tr>
+          <td>
+            <label style="margin: 0; color: inherit">
+              <input
+                type="checkbox"
+                style="width: auto"
+                [checked]="sel.has(b.id)"
+                (change)="toggle(b.id)"
+              />
+              {{ b.nom }}
+            </label>
+          </td>
+          <td class="mut">{{ b.dni }}</td>
+        </tr>
+        } @empty {
+        <tr>
+          <td class="mut">
+            No hay beneficiarios activos. Agrégalos en Beneficiarios.
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="row" style="margin-top: 12px">
+    <b>{{ sel.size }} raciones</b>
+    <button class="p" (click)="guardar()">Guardar asistencia</button>
+    @if (mensaje()) {
+  <div class="alert alert-success mt-2 mb-0 py-2" role="alert">
+    {{ mensaje() }}
+  </div>
+  }
+  </div>
+</div>
+
+<div class="card">
+  <h3>Salida de insumos</h3>
+  <p class="mut" style="margin: 0 0 8px">
+    Primero aparecen los que vencen antes. Usa esos primero.
+  </p>
+  <div class="row">
+    <select style="flex: 2" [(ngModel)]="insumoId" aria-label="Insumo">
+      @for (i of lotes(); track i.id) {
+      <option [ngValue]="i.id">
+        {{ i.nom }} · stock {{ i.cant }} · vence {{ i.venc || '—' }}
+      </option>
+      }
+    </select>
+    <input
+      type="number"
+      min="0"
+      step="any"
+      placeholder="Cantidad"
+      aria-label="Cantidad"
+      style="flex: 1"
+      [(ngModel)]="cant"
+    />
+    <button class="p" (click)="descontar()">Descontar del stock</button>
+  </div>
+  <div class="err">{{ error }}</div>
+</div>
+
+<div class="card scroll">
+  <h3>Historial de raciones</h3>
+  <table style="min-width: 300px">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Raciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (a of historial(); track a.fecha) {
+      <tr>
+        <td>{{ a.fecha }}</td>
+        <td>{{ a.ids.length }}</td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="2" class="mut">Aún no hay asistencia registrada.</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

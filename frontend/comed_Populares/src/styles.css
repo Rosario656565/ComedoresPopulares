@@ -1,0 +1,509 @@
+/* You can add global styles to this file, and also import other style files */
+/* ========================================
+   1. VARIABLES Y CONFIGURACIÓN GENERAL
+======================================== */
+
+:root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --ink: #0f172a;
+    --mut: #64748b;
+    --line: #dbe3ea;
+    --pri: #17552f;
+    --priInk: #ffffff;
+    --acc: #c2410c;
+    --warn: #92400e;
+    --bad: #b91c1c;
+    --ok: #166534;
+
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Modo oscuro */
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #10181c;
+        --card: #18242a;
+        --ink: #e6eef1;
+        --mut: #9bb0b8;
+        --line: #2a3b43;
+        --pri: #4fb3bd;
+        --priInk: #08181b;
+        --warn: #e0a640;
+        --bad: #e5776d;
+        --ok: #6cc58f;
+    }
+}
+
+:root[data-theme="dark"] {
+    --bg: #10181c;
+    --card: #18242a;
+    --ink: #e6eef1;
+    --mut: #9bb0b8;
+    --line: #2a3b43;
+    --pri: #4fb3bd;
+    --priInk: #08181b;
+    --warn: #e0a640;
+    --bad: #e5776d;
+    --ok: #6cc58f;
+}
+
+/* ========================================
+   2. RESET Y ESTILOS BASE
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+html {
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+    margin: 0;
+    background: #ffffff;
+    color: var(--ink);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+    margin: 0;
+    font-weight: 650;
+}
+
+h2 {
+    font-size: 1.7rem;
+    margin-bottom: 14px;
+}
+
+h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+/* ========================================
+   3. BOTONES Y CAMPOS DE FORMULARIO
+======================================== */
+
+button {
+    font: inherit;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid var(--pri);
+    background: var(--card);
+    color: var(--pri);
+    padding: 8px 14px;
+}
+
+button.p {
+    background: var(--acc);
+    color: #ffffff;
+    border-color: var(--acc);
+    font-weight: 600;
+}
+
+button.d {
+    color: var(--bad);
+    border-color: var(--bad);
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--pri);
+    outline-offset: 2px;
+}
+
+input,
+select {
+    font: inherit;
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+}
+
+label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--mut);
+    margin: 10px 0 3px;
+}
+
+/* ========================================
+   4. PANTALLA DE INICIO DE SESIÓN
+======================================== */
+
+#login {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+}
+
+.box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    max-width: 360px;
+}
+
+.err {
+    color: var(--bad);
+    font-size: 0.85rem;
+    min-height: 1.2em;
+    margin-top: 8px;
+}
+
+/* ========================================
+   5. ESTRUCTURA PRINCIPAL
+======================================== */
+
+#app:not([hidden]) {
+    display: flex;
+    min-height: 100vh;
+}
+
+#app main {
+    flex: 1;
+    min-width: 0;
+    background: var(--bg);
+    margin: 0;
+    max-width: none;
+    padding: 28px 28px 60px;
+}
+
+/* ========================================
+   6. MENÚ LATERAL Y ENCABEZADO
+======================================== */
+
+header {
+    background: var(--pri);
+    color: var(--priInk);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 5;
+}
+
+#app header {
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    width: 220px;
+    flex: none;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    padding: 24px 12px;
+    gap: 4px;
+    overflow-y: auto;
+}
+
+header b {
+    margin-right: auto;
+}
+
+#app header b {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+    padding: 0 12px;
+}
+
+#app header b small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.78rem;
+    opacity: 0.85;
+    padding: 0;
+}
+
+header button {
+    background: transparent;
+    color: var(--priInk);
+    border-color: transparent;
+}
+
+#app header button {
+    text-align: left;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 8px;
+}
+
+#app header button:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+header button.on {
+    background: rgba(255, 255, 255, 0.22);
+    font-weight: 650;
+}
+
+#app header button.on {
+    background: #ffffff;
+    color: var(--pri);
+}
+
+#app header #out {
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 0;
+}
+
+#app header > small {
+    opacity: 0.85;
+    font-size: 0.78rem;
+    padding: 6px 12px;
+}
+
+/* ========================================
+   7. TARJETAS Y DISTRIBUCIÓN
+======================================== */
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+/* ========================================
+   8. INDICADORES KPI
+======================================== */
+
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.kpi {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.kpi .n {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.n.g {
+    color: var(--ok);
+}
+
+.n.r {
+    color: var(--bad);
+}
+
+.big {
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ========================================
+   9. TABLAS
+======================================== */
+
+.scroll {
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 620px;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+}
+
+th {
+    color: var(--mut);
+    font-weight: 550;
+    font-size: 0.85rem;
+    background: #f1f5f9;
+}
+
+td.a {
+    text-align: right;
+}
+
+td.a button {
+    padding: 4px 10px;
+    margin-left: 4px;
+}
+
+/* ========================================
+   10. ETIQUETAS Y ESTADOS
+======================================== */
+
+.tag {
+    padding: 2px 9px;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    border: 0;
+    font-weight: 600;
+}
+
+.tag.ok {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.tag.bad {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.tag.warn {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.tag.mut {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.ok {
+    color: var(--ok);
+}
+
+.bad {
+    color: var(--bad);
+}
+
+.warn {
+    color: var(--warn);
+}
+
+.mut {
+    color: var(--mut);
+}
+
+/* ========================================
+   11. ALERTAS
+======================================== */
+
+.al {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    background: #fef3c7;
+    border: 1px solid #d97706;
+    color: #92400e;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+}
+
+.al.r {
+    background: #fee2e2;
+    border-color: #dc2626;
+    color: #991b1b;
+}
+
+/* ========================================
+   12. VENTANAS MODALES
+======================================== */
+
+dialog {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--ink);
+    width: min(440px, 94vw);
+    padding: 20px;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.bt {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+/* ========================================
+   13. GRÁFICOS
+======================================== */
+
+.cv {
+    position: relative;
+    height: 320px;
+}
+
+/* ========================================
+   14. DISEÑO RESPONSIVE
+======================================== */
+
+@media (max-width: 760px) {
+
+    #app:not([hidden]) {
+        flex-direction: column;
+    }
+
+    #app header {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    #app header b {
+        width: 100%;
+        margin-bottom: 6px;
+    }
+
+    #app header #out {
+        margin-top: 0;
+        border: 0;
+    }
+
+    #app main {
+        padding: 16px;
+    }
+}

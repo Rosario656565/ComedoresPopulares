@@ -1,0 +1,39 @@
+<div class="row">
+  <div>
+    <h2 style="margin: 0">Panel principal</h2>
+    <div class="mut">Resumen del día - Huancayo</div>
+  </div>
+  <button class="p" (click)="irRaciones.emit()">
+    + Registrar raciones de hoy
+  </button>
+</div>
+
+<div class="kpis">
+  <div class="kpi">
+    <div class="n g">{{ racionesHoy() }}</div>
+    <div class="mut">Raciones de hoy</div>
+  </div>
+  <div class="kpi">
+    <div class="n g">{{ activos() }}</div>
+    <div class="mut">Beneficiarios activos</div>
+  </div>
+  <div class="kpi">
+    <div class="n r">{{ bajos() }}</div>
+    <div class="mut">Insumos con stock bajo</div>
+  </div>
+  <div class="kpi">
+    <div class="n r">{{ porVencer() }}</div>
+    <div class="mut">Próximos a vencer</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Alertas importantes</h3>
+  @for (a of alertas(); track $index) {
+  <div class="al" [class.r]="a.rojo">
+    <span><b>{{ a.nom }}</b>: {{ a.txt }}</span><b>{{ a.acc }}</b>
+  </div>
+  } @empty {
+  <p class="mut">No hay alertas. Los insumos tienen stock y fechas en orden.</p>
+  }
+</div>
