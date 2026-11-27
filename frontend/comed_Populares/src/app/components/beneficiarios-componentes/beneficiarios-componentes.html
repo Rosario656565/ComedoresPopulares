@@ -1,0 +1,82 @@
+<div class="row">
+  <h2 style="margin: 0">Beneficiarios</h2>
+  <button class="p" (click)="nuevo()">Agregar beneficiario</button>
+</div>
+
+<div class="card scroll">
+  <table>
+    <thead>
+      <tr>
+        <th>Apellidos y nombres</th>
+        <th>DNI</th>
+        <th>Dirección</th>
+        <th>Nacimiento</th>
+        <th>Email</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (b of d.beneficiarios(); track b.id) {
+      <tr>
+        <td>{{ b.nom }}</td>
+        <td>{{ b.dni }}</td>
+        <td>{{ b.dir }}</td>
+        <td>{{ b.nac }}</td>
+        <td>{{ b.mail }}</td>
+        <td>
+          <span
+            class="tag"
+            [class.ok]="b.est === 'Activo'"
+            [class.mut]="b.est !== 'Activo'"
+            >{{ b.est }}</span
+          >
+        </td>
+        <td class="a">
+          <button (click)="editar(b)">Editar</button>
+          <button class="d" (click)="eliminar(b)">Eliminar</button>
+        </td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="7" class="mut">
+          Aún no hay beneficiarios. Agrega el primero.
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (form) {
+<div class="ov">
+  <form class="md" ngNativeValidate (ngSubmit)="guardar()">
+    <h3>{{ form.id ? 'Editar' : 'Nuevo' }} beneficiario</h3>
+    <label>Apellidos y nombres</label>
+    <input name="nom" [(ngModel)]="form.nom" required />
+    <label>DNI</label>
+    <input
+      name="dni"
+      [(ngModel)]="form.dni"
+      required
+      pattern="\d{8}"
+      title="8 dígitos"
+    />
+    <label>Dirección</label>
+    <input name="dir" [(ngModel)]="form.dir" required />
+    <label>Fecha de nacimiento</label>
+    <input name="nac" type="date" [(ngModel)]="form.nac" required />
+    <label>Email</label>
+    <input name="mail" type="email" [(ngModel)]="form.mail" />
+    <label>Estado</label>
+    <select name="est" [(ngModel)]="form.est">
+      <option value="Activo">Activo</option>
+      <option value="Inactivo">Inactivo</option>
+    </select>
+    <div class="bt">
+      <button type="button" (click)="form = null">Cancelar</button>
+      <button class="p">Guardar cambios</button>
+    </div>
+  </form>
+</div>
+}
